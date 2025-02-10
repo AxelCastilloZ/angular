@@ -3,11 +3,7 @@ import { FrmIngresosComponent } from '../../componentes/ingresos/frm-ingresos/fr
 
 @Component({
   selector: 'app-ingresos',
-  standalone: true,
-  imports: [FrmIngresosComponent],
   templateUrl: './ingresos.component.html',
-  styleUrl: './ingresos.component.css'
+  styleUrls: ['./ingresos.component.css']
 })
-export class IngresosComponent {
-
-}
+export class IngresosComponent {}

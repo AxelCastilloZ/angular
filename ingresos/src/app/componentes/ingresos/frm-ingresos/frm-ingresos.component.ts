@@ -1,53 +1,43 @@
 import { Component } from '@angular/core';
+import { IngresosService } from '../../../servicios/ingresos.service';
 import { Iingresos } from '../../../interfaces/iingresos';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // Necesario para ngModel
+import { CommonModule } from '@angular/common'; // Necesario para ngFor
 
 @Component({
   selector: 'app-frm-ingresos',
   standalone: true,
-  imports: [FormsModule],
   templateUrl: './frm-ingresos.component.html',
-  styleUrl: './frm-ingresos.component.css'
+  styleUrls: ['./frm-ingresos.component.css'],
+  imports: [CommonModule, FormsModule] // Importar módulos aquí
 })
 export class FrmIngresosComponent {
-  
-  ingresos:Iingresos[]=[];
+  nuevoIngreso: Iingresos = { id: '', nombre: '', fecha: '', monto: 0 };
+  ingresos: Iingresos[] = [];
 
-  nuevoingreso:Iingresos={id:"",nombre:"",fecha:"",monto:0};
+  constructor(private ingresosService: IngresosService) {}
 
-  agregaIngreso(){
-    if(this.nuevoingreso.id==""){
-      alert("COMPLETA TODOS LOS DATOS DEL FORMULARIO");
-      return;
-    }
-    const item = this.ingresos.find(item=>item.id==this.nuevoingreso.id);
-    if(item){
-      const indice = this.ingresos.indexOf(item);
-      this.ingresos.splice(indice,1,{...this.nuevoingreso});
-      alert("ELEMENTO ACTUALIZADO");
-      this.limpiar();
-      return;
-    }
-    const {id,nombre,fecha,monto}=this.nuevoingreso;
-    
-    this.ingresos.push({...this.nuevoingreso});
-    alert("INGRESO AGREGADO");
-    this.limpiar();
+  ngOnInit() {
+    this.ingresosService.obtenerIngresos().subscribe(data => {
+      this.ingresos = data;
+    });
   }
-  limpiar(){
-    this.nuevoingreso.id="";
-    this.nuevoingreso.nombre="";
-    this.nuevoingreso.fecha="";
-    this.nuevoingreso.monto=0;
-  }
-  editar(id:string):void{
-    const aux = this.ingresos.find(item=>item.id==id);
-    if(aux){
-      this.nuevoingreso={...aux};
+
+  agregaIngreso() {
+    if (this.nuevoIngreso.id && this.nuevoIngreso.nombre && this.nuevoIngreso.fecha) {
+      this.ingresosService.agregarIngreso(this.nuevoIngreso);
+      this.nuevoIngreso = { id: '', nombre: '', fecha: '', monto: 0 }; // Limpiar formulario
     }
   }
-  eliminar(id:string){
-    this.ingresos = this.ingresos.filter(item=>item.id!==id);
-    
+
+  eliminar(id: string) {
+    this.ingresosService.eliminarIngreso(id);
+  }
+
+  editar(id: string) {
+    const ingreso = this.ingresosService.obtenerIngresoPorId(id);
+    if (ingreso) {
+      this.nuevoIngreso = { ...ingreso };
+    }
   }
 }
