@@ -1,53 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { GastosService } from '../../../servicios/gastos/gastos.service';
 import { Igastos } from '../../../interfaces/igastos';
+
 
 @Component({
   selector: 'app-frm-gastos',
   standalone: true,
-  imports: [FormsModule],
   templateUrl: './frm-gastos.component.html',
-  styleUrl: './frm-gastos.component.css'
+  styleUrls: ['./frm-gastos.component.css'],
+  imports: [CommonModule, FormsModule]
 })
-export class FrmGastosComponent {
-  
+export class FrmGastosComponent implements OnInit {
+  @Input() ingresoId!: string; // Recibe el ID del ingreso desde el padre
+  nuevoGasto: Igastos = { id: '', ingresoId: '', descripcion: '', fecha: '', monto: 0 };
   gastos: Igastos[] = [];
 
-  nuevogasto: Igastos = { id: "", ingresoId: "", monto: 0, descripcion: "", fecha: "" };
+  constructor(private gastosService: GastosService) {}
 
-  agregaGasto() {
-    if (this.nuevogasto.id === "" || this.nuevogasto.descripcion === "" || this.nuevogasto.fecha === "") {
-      alert("COMPLETA TODOS LOS DATOS DEL FORMULARIO");
-      return;
-    }
-    
-    const item = this.gastos.find(item => item.id === this.nuevogasto.id);
-    
-    if (item) {
-      const indice = this.gastos.indexOf(item);
-      this.gastos.splice(indice, 1, { ...this.nuevogasto });
-      alert("GASTO ACTUALIZADO");
-      this.limpiar();
-      return;
-    }
-
-    this.gastos.push({ ...this.nuevogasto });
-    alert("GASTO AGREGADO");
-    this.limpiar();
+  ngOnInit() {
+    this.nuevoGasto.ingresoId = this.ingresoId; // Asegurar que el gasto esté relacionado con el ingreso correcto
+    this.gastosService.obtenerGastosPorIngreso(this.ingresoId).subscribe(data => {
+      this.gastos = data;
+    });
   }
 
-  limpiar() {
-    this.nuevogasto = { id: "", ingresoId: "", monto: 0, descripcion: "", fecha: "" };
-  }
-
-  editar(id: string): void {
-    const aux = this.gastos.find(item => item.id === id);
-    if (aux) {
-      this.nuevogasto = { ...aux };
+  agregarGasto() {
+    if (this.nuevoGasto.descripcion && this.nuevoGasto.fecha && this.nuevoGasto.monto > 0) {
+      this.nuevoGasto.id = Math.random().toString(36).substr(2, 9); // Generar un ID aleatorio
+      this.nuevoGasto.ingresoId = this.ingresoId;
+      this.gastosService.agregarGasto(this.nuevoGasto);
+      this.nuevoGasto = { id: '', ingresoId: this.ingresoId, descripcion: '', fecha: '', monto: 0 };
     }
   }
 
   eliminar(id: string) {
-    this.gastos = this.gastos.filter(item => item.id !== id);
+    this.gastosService.eliminarGasto(id);
+  }
+
+  editar(id: string) {
+    const gasto = this.gastosService.obtenerGastoPorId(id);
+    if (gasto) {
+      this.nuevoGasto = { ...gasto };
+    }
   }
 }

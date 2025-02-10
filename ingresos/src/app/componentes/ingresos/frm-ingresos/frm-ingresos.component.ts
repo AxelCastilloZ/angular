@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IngresosService } from '../../../servicios/ingresos.service';
+import { IngresosService } from '../../../servicios/ingresos/ingresos.service';
 import { Iingresos } from '../../../interfaces/iingresos';
 import { FormsModule } from '@angular/forms'; // Necesario para ngModel
 import { CommonModule } from '@angular/common'; // Necesario para ngFor
