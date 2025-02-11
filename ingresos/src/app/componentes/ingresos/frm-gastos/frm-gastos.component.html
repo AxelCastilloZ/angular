@@ -1,22 +1,53 @@
-<h2>Registro de Gastos</h2>
+<h2 class="text-center text-primary mt-4">Registro de Gastos</h2>
 
-<form (submit)="agregarGasto()">
-  <label>Descripción:</label>
-  <input [(ngModel)]="nuevoGasto.descripcion" name="descripcion" required />
-  
-  <label>Fecha:</label>
-  <input type="date" [(ngModel)]="nuevoGasto.fecha" name="fecha" required />
-  
-  <label>Monto:</label>
-  <input type="number" [(ngModel)]="nuevoGasto.monto" name="monto" required />
-  
-  <button type="submit">Agregar Gasto</button>
-</form>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+     
+      <form (submit)="agregarGasto()" class="card p-4 shadow-sm border-0">
+        <h5 class="text-center mb-3">Agregar Nuevo Gasto</h5>
 
-<ul>
-  <li *ngFor="let gasto of gastos">
-    {{ gasto.descripcion }} - {{ gasto.fecha }} - ${{ gasto.monto }}
-    <button (click)="editar(gasto.id)">Editar</button>
-    <button (click)="eliminar(gasto.id)">Eliminar</button>
-  </li>
-</ul>
+        <div class="mb-3">
+          <label class="form-label"><i class="bi bi-pencil"></i> Descripción:</label>
+          <input class="form-control" [(ngModel)]="nuevoGasto.descripcion" name="descripcion" required placeholder="Ej. Cena en restaurante" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label"><i class="bi bi-calendar"></i> Fecha:</label>
+          <input type="date" class="form-control" [(ngModel)]="nuevoGasto.fecha" name="fecha" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label"><i class="bi bi-currency-dollar"></i> Monto:</label>
+          <input type="number" class="form-control" [(ngModel)]="nuevoGasto.monto" name="monto" required placeholder="Ej. 2500" />
+        </div>
+
+        <button type="submit" class="btn btn-success w-100"><i class="bi bi-plus-circle"></i> Agregar Gasto</button>
+      </form>
+    </div>
+  </div>
+
+  
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+      <h4 class="text-center text-secondary">Lista de Gastos</h4>
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
+          <ul class="list-group">
+            <li *ngFor="let gasto of gastos" class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <p class="mb-1"><strong><i class="bi bi-pencil"></i> Descripción:</strong> {{ gasto.descripcion }}</p>
+                <p class="mb-1"><strong><i class="bi bi-calendar"></i> Fecha:</strong> {{ gasto.fecha }}</p>
+                <p class="mb-0"><strong><i class="bi bi-currency-dollar"></i> Monto:</strong> ${{ gasto.monto }}</p>
+              </div>
+              <div>
+                <button (click)="editar(gasto.id)" class="btn btn-warning btn-sm me-2"><i class="bi bi-pencil-square"></i></button>
+                <button (click)="eliminar(gasto.id)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

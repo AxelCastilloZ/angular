@@ -10,5 +10,5 @@ import { FrmGastosComponent } from '../../componentes/ingresos/frm-gastos/frm-ga
   imports: [FrmGastosComponent]
 })
 export class GastosComponent {
-  ingresoIdSeleccionado = '1'; // Simulación de un ingreso seleccionado (debería venir desde un servicio)
+  ingresoIdSeleccionado = '1'; 
 }

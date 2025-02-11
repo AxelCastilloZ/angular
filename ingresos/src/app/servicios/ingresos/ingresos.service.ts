@@ -7,7 +7,7 @@ import { Iingresos } from '../../interfaces/iingresos';
   providedIn: 'root'
 })
 export class IngresosService {
-  private ingresos: Iingresos[] = []; // Lista de ingresos
+  private ingresos: Iingresos[] = []; 
 
   private ingresosSubject = new BehaviorSubject<Iingresos[]>(this.ingresos);
   ingresos$ = this.ingresosSubject.asObservable();
@@ -15,17 +15,17 @@ export class IngresosService {
   constructor() {}
 
   obtenerIngresos() {
-    return this.ingresos$; // Devolvemos un observable para que el componente se suscriba
+    return this.ingresos$; 
   }
 
   agregarIngreso(nuevoIngreso: Iingresos) {
     this.ingresos.push(nuevoIngreso);
-    this.ingresosSubject.next([...this.ingresos]); // Notificar cambios
+    this.ingresosSubject.next([...this.ingresos]); 
   }
 
   eliminarIngreso(id: string) {
     this.ingresos = this.ingresos.filter(i => i.id !== id);
-    this.ingresosSubject.next([...this.ingresos]); // Notificar cambios
+    this.ingresosSubject.next([...this.ingresos]); 
   }
 
   obtenerIngresoPorId(id: string): Iingresos | undefined {
@@ -36,7 +36,7 @@ export class IngresosService {
     const index = this.ingresos.findIndex(i => i.id === ingresoActualizado.id);
     if (index !== -1) {
       this.ingresos[index] = ingresoActualizado;
-      this.ingresosSubject.next([...this.ingresos]); // Notificar cambios
+      this.ingresosSubject.next([...this.ingresos]); 
     }
   }
   

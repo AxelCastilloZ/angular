@@ -3,11 +3,11 @@ import { FrmIngresosComponent } from '../../componentes/ingresos/frm-ingresos/fr
 
 @Component({
   selector: 'app-ingresos',
-  standalone: true,  // Asegúrate de indicar que el componente es standalone
+  standalone: true,  
   templateUrl: './ingresos.component.html',
   styleUrls: ['./ingresos.component.css'],
-  imports: [FrmIngresosComponent]  // Agrega FrmIngresosComponent en los imports
+  imports: [FrmIngresosComponent]  
 })
 export class IngresosComponent {
-  // Aquí puedes agregar lógica si es necesario
+ 
 }

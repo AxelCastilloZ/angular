@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common'; // Necesario para ngFor
   standalone: true,
   templateUrl: './frm-ingresos.component.html',
   styleUrls: ['./frm-ingresos.component.css'],
-  imports: [CommonModule, FormsModule] // Importar módulos aquí
+  imports: [CommonModule, FormsModule] 
 })
 export class FrmIngresosComponent {
   nuevoIngreso: Iingresos = { id: '', nombre: '', fecha: '', monto: 0 };
@@ -26,13 +26,13 @@ export class FrmIngresosComponent {
   agregaIngreso() {
     if (this.nuevoIngreso.id && this.nuevoIngreso.nombre && this.nuevoIngreso.fecha) {
       if (this.ingresos.some(ingreso => ingreso.id === this.nuevoIngreso.id)) {
-        // Si el ingreso existe, se actualiza
+       
         this.ingresosService.actualizarIngreso(this.nuevoIngreso);
       } else {
-        // Si el ingreso no existe, se agrega uno nuevo
+       
         this.ingresosService.agregarIngreso(this.nuevoIngreso);
       }
-      this.nuevoIngreso = { id: '', nombre: '', fecha: '', monto: 0 }; // Limpiar formulario
+      this.nuevoIngreso = { id: '', nombre: '', fecha: '', monto: 0 }; 
     }
   }
   
