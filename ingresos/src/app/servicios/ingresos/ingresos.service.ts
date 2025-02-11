@@ -39,4 +39,5 @@ export class IngresosService {
       this.ingresosSubject.next([...this.ingresos]); // Notificar cambios
     }
   }
+  
 }

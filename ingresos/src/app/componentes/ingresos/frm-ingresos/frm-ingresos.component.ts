@@ -25,10 +25,17 @@ export class FrmIngresosComponent {
 
   agregaIngreso() {
     if (this.nuevoIngreso.id && this.nuevoIngreso.nombre && this.nuevoIngreso.fecha) {
-      this.ingresosService.agregarIngreso(this.nuevoIngreso);
+      if (this.ingresos.some(ingreso => ingreso.id === this.nuevoIngreso.id)) {
+        // Si el ingreso existe, se actualiza
+        this.ingresosService.actualizarIngreso(this.nuevoIngreso);
+      } else {
+        // Si el ingreso no existe, se agrega uno nuevo
+        this.ingresosService.agregarIngreso(this.nuevoIngreso);
+      }
       this.nuevoIngreso = { id: '', nombre: '', fecha: '', monto: 0 }; // Limpiar formulario
     }
   }
+  
 
   eliminar(id: string) {
     this.ingresosService.eliminarIngreso(id);
