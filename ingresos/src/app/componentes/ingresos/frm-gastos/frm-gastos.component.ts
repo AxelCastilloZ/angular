@@ -21,11 +21,12 @@ export class FrmGastosComponent implements OnInit {
   constructor(private gastosService: GastosService) {}
 
   ngOnInit() {
-    this.nuevoGasto.ingresoId = this.ingresoId; // Asegurar que el gasto esté relacionado con el ingreso correcto
+    this.nuevoGasto.ingresoId = this.ingresoId;
     this.gastosService.obtenerGastosPorIngreso(this.ingresoId).subscribe(data => {
       this.gastos = data;
     });
   }
+  
 
   agregarGasto() {
     if (this.nuevoGasto.descripcion && this.nuevoGasto.fecha && this.nuevoGasto.monto > 0) {

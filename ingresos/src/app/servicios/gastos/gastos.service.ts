@@ -1,26 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators'; // Importar map correctamente
 import { Igastos } from '../../interfaces/igastos';
+
 @Injectable({
   providedIn: 'root'
 })
 export class GastosService {
-  private gastos: Igastos[] = [];
+  private gastos: Igastos[] = [];  
+  private gastosSubject = new BehaviorSubject<Igastos[]>(this.gastos); // Tipo explícito
 
   obtenerGastos(): Observable<Igastos[]> {
-    return of(this.gastos);
+    return this.gastosSubject.asObservable();
   }
 
   obtenerGastosPorIngreso(ingresoId: string): Observable<Igastos[]> {
-    return of(this.gastos.filter(g => g.ingresoId === ingresoId));
+    return this.gastosSubject.asObservable().pipe(
+      map((gastos: Igastos[]) => gastos.filter(g => g.ingresoId === ingresoId)) // Ahora `map` funciona correctamente
+    );
   }
 
   agregarGasto(gasto: Igastos) {
     this.gastos.push(gasto);
+    this.gastosSubject.next([...this.gastos]); // Notificar cambio
   }
 
   eliminarGasto(id: string) {
     this.gastos = this.gastos.filter(g => g.id !== id);
+    this.gastosSubject.next([...this.gastos]); // Notificar cambio
   }
 
   obtenerGastoPorId(id: string): Igastos | undefined {
@@ -31,6 +38,7 @@ export class GastosService {
     const index = this.gastos.findIndex(g => g.id === gastoActualizado.id);
     if (index !== -1) {
       this.gastos[index] = gastoActualizado;
+      this.gastosSubject.next([...this.gastos]); // Notificar cambio
     }
   }
 }
